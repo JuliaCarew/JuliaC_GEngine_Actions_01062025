@@ -20,7 +20,7 @@ public class ActionsManager : MonoBehaviour
     }
     void ReadInput()
     {
-        if (Input.GetKeyDown("Space"))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             //Actions.partyTimeEvent;
             Debug.Log("Space pressed, action taken");
