@@ -6,18 +6,12 @@ public class Crawlies : MonoBehaviour
 {
     private void OnEnable()
     {
-        if (ActionsManager.Instance != null)
-        {
-            ActionsManager.Instance.OnTorchLit += HideSpider;
-        }
+        ActionManager.OnTorchLit += HideSpider;
     }
 
     private void OnDisable()
     {
-        if (ActionsManager.Instance != null)
-        {
-            ActionsManager.Instance.OnTorchLit -= HideSpider;
-        }
+        ActionManager.OnTorchLit -= HideSpider;
     }
 
     // when the light hits the spider it disappears (later make it run?)

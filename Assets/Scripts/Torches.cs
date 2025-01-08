@@ -9,12 +9,6 @@ public class Torches : MonoBehaviour
 
     private void Start()
     {
-        // if (torchLight != null) // manually set active for debugging
-        // {
-        //     Debug.Log($"Manually activating light for {gameObject.name}.");
-        //     torchLight.SetActive(true);
-        // }
-
         if (torchLight == null)
         {
             //Debug.LogError($"{gameObject.name}: torchLight component not assigned");
@@ -26,36 +20,26 @@ public class Torches : MonoBehaviour
         }
     }
 
-    // when the player's torch collider connects with the wall torches, invoke the onLit action
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isLit) 
+        if (other.CompareTag("Player"))
         {
             //Debug.Log($"{gameObject.name}: Player entered torch trigger.");
-            isLit = true; 
-            ActionsManager.Instance?.TorchLit(); 
-        }
-        else
-        {
-            //Debug.Log($"{gameObject.name}: Torch already lit or invalid collider.");
+            ActionManager.OnTorchLit?.Invoke();
         }
     }
 
     private void OnEnable()
     {
-        if (ActionsManager.Instance != null)
-        {
-            //Debug.Log($"{gameObject.name} subscribing to OnTorchLit.");
-            ActionsManager.Instance.OnTorchLit += ActivateTorchLight; 
-        }
-        else{
-            //Debug.LogError($"{gameObject.name}: ActionsManager.Instance is null!");
-        }
+        //Debug.Log($"{gameObject.name} subscribing to OnTorchLit.");
+        ActionManager.OnTorchLit += ActivateTorchLight; 
+
     }
 
     private void OnDisable()
     {
-        ActionsManager.Instance.OnTorchLit -= ActivateTorchLight; 
+        ActionManager.OnTorchLit -= ActivateTorchLight; 
     }
 
     // enable light gameobject for each light triggered
@@ -65,10 +49,6 @@ public class Torches : MonoBehaviour
         {
             //Debug.Log($"{gameObject.name} activating its torch light.");
             torchLight.SetActive(true);
-        }
-        else
-        {
-            //Debug.LogWarning($"{gameObject.name}: torch light activation failed. isLit = {isLit}, torchLight = {torchLight}");
         }
     }
 }

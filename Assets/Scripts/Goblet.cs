@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Goblet : MonoBehaviour
 {
+    public ActionsCaller actionsCaller;
+
     public Color glowColor = Color.green; 
     public float maxGlowIntensity = 2f; 
     private Renderer plantRenderer;
@@ -11,10 +13,7 @@ public class Goblet : MonoBehaviour
 
     private void OnEnable()
     {
-        if (ActionsManager.Instance != null)
-        {
-            ActionsManager.Instance.OnTorchLit += UpdateGlow;
-        }
+        ActionManager.OnTorchLit += UpdateGlow;
 
         plantRenderer = GetComponent<Renderer>();
         if (plantRenderer != null)
@@ -25,11 +24,8 @@ public class Goblet : MonoBehaviour
     }
 
     private void OnDisable()
-    {
-        if (ActionsManager.Instance != null)
-        {
-            ActionsManager.Instance.OnTorchLit -= UpdateGlow;
-        }
+    {       
+        ActionManager.OnTorchLit -= UpdateGlow;        
     }
 
     // for each torch lit, update the intensity of the material's emission until its 3 (100%)
@@ -37,7 +33,7 @@ public class Goblet : MonoBehaviour
     {
         if (plantMaterial == null) return;
 
-        int torchesLit = ActionsManager.Instance.GetTorchesLit();
+        int torchesLit = actionsCaller.GetTorchesLit();
 
         float intensity = Mathf.Clamp01((float)torchesLit / 3) * maxGlowIntensity;
 

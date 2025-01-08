@@ -5,22 +5,24 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    public ActionsCaller actionsCaller;
     public TextMeshProUGUI torchesLitText; 
 
     private void Start()
     {
-        UpdateTorchesLitText(); 
-        ActionsManager.Instance.OnTorchLit += UpdateTorchesLitText; 
+        UpdateTorchesLitText();
+        ActionManager.OnTorchLit += UpdateTorchesLitText; 
     }
 
     private void OnDestroy()
     {
-        ActionsManager.Instance.OnTorchLit -= UpdateTorchesLitText; 
+        ActionManager.OnTorchLit -= UpdateTorchesLitText; 
     }
 
+    // update the text to show how many torches are lit
     private void UpdateTorchesLitText()
     {
-        int torchesLit = ActionsManager.Instance.GetTorchesLit();
+        int torchesLit = actionsCaller.GetTorchesLit();
         //Debug.Log($"Updating UI: Torches Lit = {torchesLit}");
         torchesLitText.text = $"Torches Lit: {torchesLit}";
 
