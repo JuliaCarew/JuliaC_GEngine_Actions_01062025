@@ -5,28 +5,33 @@ using UnityEngine;
 
 public class ActionsManager : MonoBehaviour
 {
-    public static class Actions
-    {
-        public static Action partyTimeEvent;
-    }
+    public static ActionsManager Instance; 
+    
+    public event Action OnTorchLit; 
+    private int torchesLit = 0;
 
-    private void OnEnable()
+    private void Awake()
     {
-        Actions.partyTimeEvent += ReadInput;
-    }
-    private void OnDisable()
-    {
-        
-    }
-    void ReadInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Instance == null)
         {
-            //Actions.partyTimeEvent;
-            Debug.Log("Space pressed, action taken");
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
         }
     }
-}
 
-// https://learn.microsoft.com/en-us/dotnet/standard/events/
-// https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/events/
+    public void TorchLit()
+    {
+        torchesLit++;
+        Debug.Log($"Torch Lit: {torchesLit}");
+        OnTorchLit?.Invoke(); 
+    }
+
+    public int GetTorchesLit()
+    {
+        return torchesLit;
+    }
+}
